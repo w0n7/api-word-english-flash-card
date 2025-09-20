@@ -2,6 +2,7 @@ package belato.lucas.api_word_english.controller;
 
 
 import belato.lucas.api_word_english.dto.CreateWordDtoRequest;
+import belato.lucas.api_word_english.dto.UpdateWordDtoRequest;
 import belato.lucas.api_word_english.entity.Word;
 import belato.lucas.api_word_english.service.WordService;
 import org.springframework.http.HttpStatus;
@@ -57,4 +58,14 @@ public class WordController {
             return new ResponseEntity<>("Invalid Day", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> updateWordById(@PathVariable String id, @RequestBody UpdateWordDtoRequest body) {
+        try {
+            var updateWord = wordService.updateWord(id, body);
+        }catch(Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

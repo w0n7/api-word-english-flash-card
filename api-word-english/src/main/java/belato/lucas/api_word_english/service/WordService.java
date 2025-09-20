@@ -59,20 +59,24 @@ public class WordService {
         return wordRepository.findAllByCreationTimestampBetween(startOfDay, endOfDay);
     }
 
-    public void updateWord(String wordId, UpdateWordDtoRequest wordDto) {
+    public Word updateWord(String wordId, UpdateWordDtoRequest wordDto) {
         var id = UUID.fromString(wordId);
         var wordEntity = wordRepository.findById(id);
 
-        if(wordEntity.isPresent()) {
-            var word = wordEntity.get();
-
-            if(wordDto.word() != null) {
-                word.setWord(wordDto.word());
-                word.setWordBr(wordDto.wordBr());
-            }
-
-            wordRepository.save(word);
+        if(wordEntity.isEmpty()) {
+            return null;
         }
+
+        var word =  wordEntity.get();
+        if(wordDto.word() != null) {
+            word.setWord(wordDto.word());
+        }
+
+        if(wordDto.wordBr() != null) {
+            word.setWordBr(wordDto.wordBr());
+        }
+
+        return  word;
     }
 
     public void deleteWord(String wordId) {
