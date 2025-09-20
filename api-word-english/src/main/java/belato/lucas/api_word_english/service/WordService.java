@@ -22,7 +22,7 @@ public class WordService {
     }
 
     public Word saveWord(CreateWordDtoRequest createWordDtoRequest) {
-        Word word = new Word(createWordDtoRequest.word(), Instant.now());
+        Word word = new Word(createWordDtoRequest.word(), Instant.now(), createWordDtoRequest.wordBr());
         wordRepository.save(word);
         return word;
     }
@@ -54,6 +54,7 @@ public class WordService {
 
             if(wordDto.word() != null) {
                 word.setWord(wordDto.word());
+                word.setWordBr(wordDto.wordBr());
             }
 
             wordRepository.save(word);

@@ -15,6 +15,7 @@ public class Word {
     private UUID id = UUID.randomUUID();
 
     private String word;
+    private String wordBr;
 
     @CreationTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Sao_Paulo")
@@ -24,9 +25,10 @@ public class Word {
 
     }
 
-    public Word(String word, Instant creationTimestamp) {
+    public Word(String word, Instant creationTimestamp, String wordBr) {
         this.word = word;
         this.creationTimestamp = creationTimestamp;
+        this.wordBr = wordBr;
     }
 
     public UUID getId() {
@@ -52,5 +54,13 @@ public class Word {
 
     public void setDateCreate(Instant creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
+    }
+
+    public String getWordBr() {
+        return wordBr;
+    }
+
+    public void setWordBr(String wordBr) {
+        this.wordBr = wordBr;
     }
 }
