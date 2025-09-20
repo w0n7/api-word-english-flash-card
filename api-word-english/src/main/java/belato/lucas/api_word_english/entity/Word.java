@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -19,13 +20,13 @@ public class Word {
 
     @CreationTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Sao_Paulo")
-    private Instant creationTimestamp;
+    private OffsetDateTime creationTimestamp;
 
     public Word(){
 
     }
 
-    public Word(String word, Instant creationTimestamp, String wordBr) {
+    public Word(String word, OffsetDateTime creationTimestamp, String wordBr) {
         this.word = word;
         this.creationTimestamp = creationTimestamp;
         this.wordBr = wordBr;
@@ -48,11 +49,11 @@ public class Word {
     }
 
     @JsonIgnore()
-    public Instant getDateCreate() {
+    public OffsetDateTime getDateCreate() {
         return creationTimestamp;
     }
 
-    public void setDateCreate(Instant creationTimestamp) {
+    public void setDateCreate(OffsetDateTime creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
 

@@ -6,10 +6,9 @@ import belato.lucas.api_word_english.entity.Word;
 import belato.lucas.api_word_english.service.WordService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/word")
@@ -30,6 +29,32 @@ public class WordController {
         } catch (Exception e) {
             System.out.println("Error: " + e);
             return new ResponseEntity<>("Invalid parameters", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllWords() {
+        try {
+            var listWords = wordService.getAllWords();
+
+            return new ResponseEntity<>(listWords, HttpStatus.OK);
+
+        }catch (Exception e) {
+            System.out.println("Error: " + e);
+            return new ResponseEntity<>("Internal Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("{day}")
+    public ResponseEntity<?> getAllWordsByDay(@PathVariable long day) {
+        System.out.println(day);
+        try {
+            var listWordByDay =  wordService.getAllWordByDay(day);
+            return new ResponseEntity<>(listWordByDay, HttpStatus.OK);
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+            return new ResponseEntity<>("Invalid Day", HttpStatus.BAD_REQUEST);
         }
     }
 }

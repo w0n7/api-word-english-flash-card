@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +25,7 @@ public class WordService {
     }
 
     public Word saveWord(CreateWordDtoRequest createWordDtoRequest) {
-        Word word = new Word(createWordDtoRequest.word(), Instant.now(), createWordDtoRequest.wordBr());
+        Word word = new Word(createWordDtoRequest.word(), OffsetDateTime.now(), createWordDtoRequest.wordBr());
         wordRepository.save(word);
         return word;
     }
@@ -39,10 +42,21 @@ public class WordService {
         return word;
     }
 
-    public List<Word> getAllWordByDay(Long day) {
-        Instant limit = Instant.now().minus(day, ChronoUnit.DAYS);
+    public List<Word> getAllWordByDay(Long daysAgo) {
+        ZoneId zone = ZoneId.of("America/Sao_Paulo");
 
-        return wordRepository.findAllByCreationTimestampAfter(limit);
+        // Pega a data de "hoje - daysAgo" (ex: hoje - 3 dias = 17/09/2025)
+        LocalDate targetDate = LocalDate.now(zone).minusDays(daysAgo);
+
+        // Início do dia → 00:00:00
+        OffsetDateTime startOfDay = targetDate.atStartOfDay(zone).toOffsetDateTime();
+
+        // Fim do dia → próximo dia 00:00:00 (exclusivo)
+        OffsetDateTime endOfDay = targetDate.plusDays(1).atStartOfDay(zone).toOffsetDateTime();
+
+        System.out.println("Início: " + startOfDay + " | Fim: " + endOfDay);
+
+        return wordRepository.findAllByCreationTimestampBetween(startOfDay, endOfDay);
     }
 
     public void updateWord(String wordId, UpdateWordDtoRequest wordDto) {
