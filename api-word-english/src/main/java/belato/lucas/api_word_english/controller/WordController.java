@@ -63,6 +63,11 @@ public class WordController {
     public ResponseEntity<?> updateWordById(@PathVariable String id, @RequestBody UpdateWordDtoRequest body) {
         try {
             var updateWord = wordService.updateWord(id, body);
+            if(updateWord != null) {
+               return new ResponseEntity<>(updateWord, HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>("Invalid Id", HttpStatus.BAD_REQUEST);
         }catch(Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -76,7 +76,8 @@ public class WordService {
             word.setWordBr(wordDto.wordBr());
         }
 
-        return  word;
+        wordRepository.save(word);
+        return word;
     }
 
     public void deleteWord(String wordId) {
